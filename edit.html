@@ -1,0 +1,125 @@
+<html>
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <table id="fileTable">
+    <thead>
+      <tr>
+        <th>按钮块ID.js</th>
+        <th>创建时间</th>
+        <th>操作</th>
+        <th>查看</th>
+      </tr>
+    </thead>
+    <tbody id="fileTableBody"></tbody>
+  </table>
+
+  <script>
+    function listFiles(path) {
+      fetch('/api/file/readDir', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ path: path })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 0) {
+          const fileTableBody = document.getElementById('fileTableBody');
+
+          data.data.forEach(file => {
+            const row = document.createElement('tr');
+
+            const nameCell = document.createElement('td');
+            nameCell.textContent = file.name;
+            row.appendChild(nameCell);
+
+            const updatedCell = document.createElement('td');
+            updatedCell.textContent = new Date(file.updated * 1000).toLocaleString();
+            row.appendChild(updatedCell);
+
+            const actionsCell = document.createElement('td');
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = '删除按钮';
+            deleteButton.addEventListener('click', () => {
+              deleteFile(file.name);
+            });
+            actionsCell.appendChild(deleteButton);
+            row.appendChild(actionsCell);
+
+            const viewCell = document.createElement('td');
+            const viewButton = document.createElement('button');
+            viewButton.textContent = '查看';
+            viewButton.addEventListener('click', () => {
+              viewFile(file.name);
+            });
+            viewCell.appendChild(viewButton);
+            row.appendChild(viewCell);
+
+            fileTableBody.appendChild(row);
+          });
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function deleteFile(path) {
+      fetch('/api/file/removeFile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ path: "/data/widgets/button/js/"+path })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.code === 0) {
+          console.log('File deleted successfully.');
+          location.reload(); // 刷新网页
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function viewFile(path) {
+      fetch('/api/file/getFile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ path: "/data/widgets/button/js/"+path })
+      })
+      .then(response => {
+        if (response.status === 200) {
+          return response.text();
+        } else if (response.status === 202) {
+          throw new Error('Failed to retrieve file content.');
+        }
+      })
+      .then(content => {
+        alert(content); // 在弹窗中显示文件内容
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    // Call the function with the desired path
+    listFiles('/data/widgets/button/js');
+  </script>
+</body>
+</html>

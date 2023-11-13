@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="button.css">
+    <script>
+        const id = window.frameElement.parentElement.parentElement.getAttribute("data-node-id");
+        var jsFilePath = "./js/" + id + ".js";
+        var scriptTag = document.createElement("script");
+        scriptTag.src = jsFilePath;
+        document.head.appendChild(scriptTag);
+
+        // 在JavaScript文件加载完成后执行的回调函数
+        scriptTag.onload = function() {
+            var buttonName = getButtonName(); // 调用获取按钮名称的函数
+            var buttonElement = document.getElementById("myButton");
+            buttonElement.textContent = buttonName; // 设置按钮的文本
+        };
+    </script>    
+</head>
+
+<body>
+    <a href="#" class="button" id="myButton" onclick="executeScriptFunctions()"></a>
+</body>
+
+</html>

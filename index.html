@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      /* 样式表中定义输入框和按钮的样式 */
+      #buttonText {
+        width: 100%; /* 设置输入框宽度为100% */
+        height: 200px; /* 设置输入框高度为200px */
+        resize: vertical; /* 允许垂直方向上的调整大小 */
+        border-radius: 10px; /* 圆角化输入框 */
+        padding: 10px; /* 增加内边距 */
+        font-family: monospace; /* 使用等宽字体以便展示代码 */
+      }
+      #submitButton,
+      #manageButton {
+        border-radius: 5px; /* 圆角化按钮 */
+        padding: 10px 20px; /* 增加内边距 */
+        margin: 10px; /* 增加外边距 */
+      }
+
+      .button {
+        border-radius: 5px; /* 圆角化按钮 */
+        padding: 10px 20px; /* 增加内边距 */
+        margin: 10px; /* 增加外边距 */
+      }
+      p {
+        color: aqua;
+      }
+      .CodeMirror {
+        height: 200px; /* 设置输入框高度为200px */
+        font-size: 16px; /* 设置字体大小 */
+        border-radius: 10px; /* 圆角化输入框 */
+      }
+    </style>
+    <script>
+      window.addEventListener("DOMContentLoaded", function () {
+        const id =
+          window.frameElement.parentElement.parentElement.getAttribute(
+            "data-node-id"
+          );
+
+        fetch("/api/file/readDir", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            path: "/data/widgets/button/js/",
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const files = data.data;
+            const hasIdFile = files.some((file) => file.name === id + ".js");
+
+            if (hasIdFile) {
+              // id.js文件存在，跳转到./button.html
+              window.location.href = "./button.html";
+            } else {
+              // id.js文件不存在
+              console.log("按钮未定义");
+            }
+          })
+          .catch((error) => {
+            console.error("请求发生错误:", error);
+          });
+
+// 从./temple.txt加载预置文本到输入框
+fetch("./temple.txt")
+  .then((response) => response.text())
+  .then((data) => {
+    var myTextarea = document.getElementById("buttonText");
+    myTextarea.value = data;
+
+    // 初始化 CodeMirror 实例，并将文本传递给它
+    var editor = CodeMirror.fromTextArea(myTextarea, {
+      lineNumbers: true, // 显示行号
+      mode: "javascript", // 指定语言模式为 JavaScript
+    });
+  })
+  .catch((error) => {
+    console.error("加载预置文本发生错误:", error);
+  });
+
+
+        // 提交按钮点击事件
+        document
+          .getElementById("submitButton")
+          .addEventListener("click", function () {
+            const inputText = document.getElementById("buttonText").value;
+
+            // 创建Blob对象
+            const blob = new Blob([inputText], { type: "text/javascript" });
+
+            // 创建FormData对象
+            const formData = new FormData();
+            formData.append("assetsDirPath", "/widgets/button/js/");
+            formData.append("file[]", blob, id + ".js");
+
+            // 上传文件
+            fetch("/api/asset/upload", {
+              method: "POST",
+              body: formData,
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // 处理上传结果
+                console.log("文件上传结果:", data);
+                location.reload();
+              })
+              .catch((error) => {
+                console.error("文件上传发生错误:", error);
+              });
+          });
+        // 管理按钮点击事件
+        document
+          .getElementById("manageButton")
+          .addEventListener("click", function () {
+            window.location.href = "./edit.html";
+          });
+      });
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/javascript/javascript.min.js"></script>
+  </head>
+  <body>
+    <p>请定义您的按钮，然后点击提交</p>
+    <textarea
+      id="buttonText"
+      placeholder="请定义您的按钮"
+      class="language-javascript"
+    ></textarea>
+    <button id="submitButton">提交按钮</button>
+    <button id="manageButton">管理按钮</button>
+  </body>
+</html>
