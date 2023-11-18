@@ -14,10 +14,10 @@
   <table id="fileTable">
     <thead>
       <tr>
-        <th>按钮块ID.js</th>
-        <th>创建时间</th>
-        <th>操作</th>
-        <th>查看</th>
+        <th>按钮块ID.js</th> <!-- Button block ID -->
+        <th>创建时间</th> <!-- creation time -->
+        <th>操作</th> <!-- operate -->
+        <th>查看</th> <!-- Check -->
       </tr>
     </thead>
     <tbody id="fileTableBody"></tbody>
@@ -59,7 +59,7 @@
 
             const viewCell = document.createElement('td');
             const viewButton = document.createElement('button');
-            viewButton.textContent = '查看';
+            viewButton.textContent = '查看'; // Check
             viewButton.addEventListener('click', () => {
               viewFile(file.name);
             });
@@ -87,7 +87,7 @@
       .then(data => {
         if (data.code === 0) {
           console.log('File deleted successfully.');
-          location.reload(); // 刷新网页
+          location.reload(); // 刷新网页 / refresh page
         }
       })
       .catch(error => {
@@ -111,7 +111,7 @@
         }
       })
       .then(content => {
-        alert(content); // 在弹窗中显示文件内容
+        alert(content); // 在弹窗中显示文件内容 / Display file content in pop-up window
       })
       .catch(error => {
         console.error('Error:', error);
