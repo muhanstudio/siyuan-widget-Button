@@ -13,10 +13,11 @@
         document.head.appendChild(scriptTag);
 
         // 在JavaScript文件加载完成后执行的回调函数
+        // A callback function executed after the JavaScript file is loaded
         scriptTag.onload = function() {
-            var buttonName = getButtonName(); // 调用获取按钮名称的函数
+            var buttonName = getButtonName(); // 调用获取按钮名称的函数 / Call the function that gets the button name
             var buttonElement = document.getElementById("myButton");
-            buttonElement.textContent = buttonName; // 设置按钮的文本
+            buttonElement.textContent = buttonName; // 设置按钮的文本 / Set button text
         };
     </script>    
 </head>

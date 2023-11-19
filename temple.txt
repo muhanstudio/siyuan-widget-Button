@@ -1,56 +1,56 @@
-//编辑return修改按钮名称
+//编辑return修改按钮名称 / Edit return to modify button name
 function getButtonName() {
-    // 在这里修改按钮名称
-    return "按钮名称";
+    // 在这里修改按钮名称 / Change button name here
+    return "按钮名称"; // Button name
 }
 
-//按钮按下时，会执行executeScriptFunctions()函数，请在executeScriptFunctions()里面定义并调用你所有的函数
+//按钮按下时，会执行executeScriptFunctions()函数，请在executeScriptFunctions()里面定义并调用你所有的函数 / When the button is pressed, the executeScriptFunctions() function will be executed. Please define and call all your functions in executeScriptFunctions().
 function executeScriptFunctions() {
-    // 示例函数1：弹窗消息
+    // 示例函数1：弹窗消息 / Example function 1: Pop-up message
     function sayHello() {
-        alert("欢迎来到思源笔记"); // 在弹窗中显示内容
+        alert("欢迎来到思源笔记"); // 在弹窗中显示内容 / Display welcome message in pop-up window
     }
 
-    /* 示例函数2：自定义按钮css样式
+    /* 示例函数2：自定义按钮css样式 / Sample function 2: Custom button css style
     function overrideStyles() {
         var button = document.getElementById("myButton");
-        button.classList.remove("button"); // 移除原有的class
-        button.style.backgroundColor = "red"; // 修改背景颜色
-        button.style.color = "black"; // 修改文字颜色
-        // 在这里可以添加其他需要修改的样式
+        button.classList.remove("button"); // 移除原有的class / Remove the original class
+        button.style.backgroundColor = "red"; // 修改背景颜色 / Modify background color
+        button.style.color = "black"; // 修改文字颜色 / Modify text color
+        // 在这里可以添加其他需要修改的样式 / Here you can add other styles that need to be modified
     } */
 
-    // 示例函数3：创建新笔记本
+    // 示例函数3：创建新笔记本 / Example function 3: Create a new notebook
     function createNotebook() {
         fetch('/api/notebook/createNotebook', {
             method: 'POST',
             headers: {
-                // 自定义请求头(这里不需要)
+                // 自定义请求头(这里不需要) / Custom request header (not needed here)
             },
             body: JSON.stringify({
-                "name": "新笔记本名字"
+                "name": "新笔记本名字" / New notebook name
             })
         })
     }
 
-    // 示例函数4：通过 Markdown 创建文档
+    // 示例函数4：通过 Markdown 创建文档 / Example function 4: Create document through Markdown
     function ccreateDocWithMd() {
         fetch('/api/filetree/createDocWithMd', {
             method: 'POST',
             headers: {
-                // 自定义请求头(这里不需要)
+                // 自定义请求头(这里不需要) / / Custom request header (not needed here)
             },
             body: JSON.stringify({
-                "notebook": "20210817205410-2kvfpfn",   /* 笔记本id */
-                "path": "/foo/bar",   /* 创建路径 */
-                "markdown": "# 你好你好你好你好你好你好"   /* md格式的文档内容 */
+                "notebook": "20210817205410-2kvfpfn",   /* 笔记本id  / notebook id */
+                "path": "/foo/bar",   /* 创建路径 / create path*/
+                "markdown": "# 你好你好你好你好你好你好"   /* md格式的文档内容 / Document content in md format*/
             })
         })
     }
 
-    // 更多函数请阅读思源官方api文档：https://github.com/siyuan-note/siyuan/blob/master/API_zh_CN.md
+    // 更多函数请阅读思源官方api文档：https://github.com/siyuan-note/siyuan/blob/master/API_zh_CN.md / For more functions, please read Siyuan official API documentation
 
-    // 执行所有函数
+    // 执行所有函数 / execute all functions
     sayHello();
     createNotebook();
     ccreateDocWithMd();
